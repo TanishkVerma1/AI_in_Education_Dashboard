@@ -301,7 +301,7 @@ elif page == "🎓 AI Usage Patterns":
     title="6) More AI days → More time saved? (with trend line)"
     )
     fig6 = add_linear_trendline(fig6, dpage, "ai_use_days_per_week", "time_saved_hours_per_week", "Trend line")
-    st.plotly_chart(fig6, use_container_width=True)
+    #st.plotly_chart(fig6, use_container_width=True)
 
     fig6.update_layout(xaxis_title="Days per week using AI", yaxis_title="Hours saved per week")
     st.plotly_chart(fig6, use_container_width=True)

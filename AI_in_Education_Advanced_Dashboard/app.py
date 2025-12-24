@@ -494,12 +494,12 @@ elif page == "👩‍🏫 Policy • Faculty • Misuse":
 
     # 6) Trust vs training (scatter)
     fig6 = px.scatter(
-    dpage,
+    faculty,
     x="ai_training_hours_last_6_months",
     y="trust_in_ai_outputs_1to5",
     title="6) Faculty Training vs Trust in AI (trend line)"
     )
-    fig6 = add_linear_trendline(fig6, dpage, "ai_training_hours_last_6_months", "trust_in_ai_outputs_1to5", "Trend line")
+    fig6 = add_linear_trendline(fig6, faculty, "ai_training_hours_last_6_months", "trust_in_ai_outputs_1to5", "Trend line")
     #st.plotly_chart(fig6, use_container_width=True)
 
     
@@ -581,12 +581,12 @@ elif page == "📈 Student Outcomes":
     # 4) Usage vs grade change scatter
 
     fig4 = px.scatter(
-    dpage,
+    students,
     x="ai_use_days_per_week",
     y="student_grade_change_pct",
     title="4) AI Usage Frequency vs Grade Change (trend line)"
     )
-    fig4 = add_linear_trendline(fig4, dpage, "ai_use_days_per_week", "student_grade_change_pct", "Trend line")
+    fig4 = add_linear_trendline(fig4, students, "ai_use_days_per_week", "student_grade_change_pct", "Trend line")
     #st.plotly_chart(fig6, use_container_width=True)
 
     

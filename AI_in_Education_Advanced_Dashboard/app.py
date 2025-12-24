@@ -34,6 +34,31 @@ def add_linear_trendline(fig, df_in, x_col, y_col, name="Trend line"):
     )
     return fig
 
+def add_regression_line(fig, x, y, name="Trend (linear)"):
+    """
+    Adds a simple linear regression line to an existing Plotly figure.
+    Uses numpy.polyfit (no statsmodels needed).
+    """
+    x = np.asarray(x)
+    y = np.asarray(y)
+
+    mask = np.isfinite(x) & np.isfinite(y)
+    x = x[mask]
+    y = y[mask]
+
+    if len(x) < 2:
+        return fig
+
+    m, b = np.polyfit(x, y, 1)
+    xs = np.linspace(x.min(), x.max(), 50)
+    ys = m * xs + b
+
+    fig.add_trace(go.Scatter(
+        x=xs, y=ys,
+        mode="lines",
+        name=name
+    ))
+    return fig
 # -------------------------
 # PAGE CONFIG
 # -------------------------
@@ -598,12 +623,26 @@ elif page == "📈 Student Outcomes":
     ])
 
     # 5) Dependency risk vs grade change
+
     fig5 = px.scatter(
-        sp, x="perceived_dependency_risk_1to5", y="student_grade_change_pct",
-        trendline="ols", title="5) Dependency Risk vs Grade Change (trend line)"
+    students,
+    x="perceived_dependency_risk_1to5",
+    y="student_grade_change_pct",
+    title="Dependency Risk vs Grade Change",
+    opacity=0.6,
+    hover_data=["ai_adoption_category", "ai_use_days_per_week"]
+    )
+    
+    fig5 = add_regression_line(
+        fig5,
+        students["perceived_dependency_risk_1to5"],
+        students["student_grade_change_pct"],
+        name="Trend (linear)"
     )
     fig5.update_layout(xaxis_title="Dependency risk (1–5)", yaxis_title="Grade change (%)")
     st.plotly_chart(fig5, use_container_width=True)
+
+    
     insight_box([
         "Higher dependency risk can harm long-term learning, even if grades rise short-term.",
         "Teach students to use AI as a tutor, not an answer machine."

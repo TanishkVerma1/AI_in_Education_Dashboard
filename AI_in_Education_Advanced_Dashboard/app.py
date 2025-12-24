@@ -494,9 +494,15 @@ elif page == "👩‍🏫 Policy • Faculty • Misuse":
 
     # 6) Trust vs training (scatter)
     fig6 = px.scatter(
-        fp, x="ai_training_hours_last_6_months", y="trust_in_ai_outputs_1to5",
-        trendline="ols", title="6) Faculty Training vs Trust in AI (trend line)"
+    dpage,
+    x="ai_training_hours_last_6_months",
+    y="trust_in_ai_outputs_1to5",
+    title="6) Faculty Training vs Trust in AI (trend line)"
     )
+    fig6 = add_linear_trendline(fig6, dpage, "ai_training_hours_last_6_months", "trust_in_ai_outputs_1to5", "Trend line")
+    #st.plotly_chart(fig6, use_container_width=True)
+
+    
     fig6.update_layout(xaxis_title="Training hours (last 6 months)", yaxis_title="Trust in AI (1–5)")
     st.plotly_chart(fig6, use_container_width=True)
     insight_box([
@@ -573,10 +579,17 @@ elif page == "📈 Student Outcomes":
     ])
 
     # 4) Usage vs grade change scatter
+
     fig4 = px.scatter(
-        sp, x="ai_use_days_per_week", y="student_grade_change_pct",
-        trendline="ols", title="4) AI Usage Frequency vs Grade Change (trend line)"
+    dpage,
+    x="ai_use_days_per_week",
+    y="student_grade_change_pct",
+    title="4) AI Usage Frequency vs Grade Change (trend line)"
     )
+    fig4 = add_linear_trendline(fig4, dpage, "ai_use_days_per_week", "student_grade_change_pct", "Trend line")
+    #st.plotly_chart(fig6, use_container_width=True)
+
+    
     fig4.update_layout(xaxis_title="Days/week using AI", yaxis_title="Grade change (%)")
     st.plotly_chart(fig4, use_container_width=True)
     insight_box([

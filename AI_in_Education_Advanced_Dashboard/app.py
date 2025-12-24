@@ -95,12 +95,27 @@ if page == "📘 Overview":
     )
 
     # 2️⃣ AI Adoption Category
+    adopt_counts = (
+    dff["ai_adoption_category"]
+    .value_counts()
+    .reset_index()
+    .rename(columns={
+        "index": "AI Adoption Category",
+        "ai_adoption_category": "Number of Respondents"
+    })
+    )
+    
     fig2 = px.bar(
-        dff["ai_adoption_category"].value_counts().reset_index(),
-        x="index", y="ai_adoption_category",
-        labels={"index": "AI Adoption Level", "ai_adoption_category": "Count"},
+        adopt_counts,
+        x="AI Adoption Category",
+        y="Number of Respondents",
+        text="Number of Respondents",
         title="AI Adoption Levels"
     )
+
+    fig2.update_traces(textposition="outside")
+    fig2.update_layout(yaxis_title="Respondents", xaxis_title="")
+
     st.plotly_chart(fig2, use_container_width=True)
     st.markdown(
         "**Key Insight:**\n"

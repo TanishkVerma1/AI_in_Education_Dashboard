@@ -124,12 +124,23 @@ if page == "📘 Overview":
     )
 
     # 3️⃣ AI Literacy
-    fig3 = px.histogram(
-        dff,
-        x="ai_literacy_1to5",
-        nbins=5,
-        title="AI Literacy Levels (1–5)"
+    tool_df = (
+    dff["primary_ai_tool"]
+    .value_counts()
+    .reset_index(name="count")
+    .rename(columns={"index": "AI Tool"})
     )
+
+    fig3 = px.bar(
+        tool_df,
+        x="AI Tool",
+        y="count",
+        text="count",
+        title="Most Used AI Tools"
+    )
+    fig3.update_traces(textposition="outside")
+    st.plotly_chart(fig3, use_container_width=True)
+
     st.plotly_chart(fig3, use_container_width=True)
     st.markdown(
         "**Key Insight:**\n"
@@ -138,11 +149,24 @@ if page == "📘 Overview":
     )
 
     # 4️⃣ Digital Comfort
-    fig4 = px.box(
-        dff,
-        y="digital_comfort_1to5",
-        title="Digital Comfort Distribution"
+   usecase_df = (
+    dff["top_ai_use_cases"]
+    .value_counts()
+    .head(10)
+    .reset_index(name="count")
+    .rename(columns={"index": "AI Use Case"})
     )
+    
+    fig4 = px.bar(
+        usecase_df,
+        x="AI Use Case",
+        y="count",
+        text="count",
+        title="Top AI Use Cases"
+    )
+    fig4.update_traces(textposition="outside")
+    st.plotly_chart(fig4, use_container_width=True)
+
     st.plotly_chart(fig4, use_container_width=True)
     st.markdown(
         "**Key Insight:**\n"
@@ -150,11 +174,23 @@ if page == "📘 Overview":
     )
 
     # 5️⃣ Internet Quality
-    fig5 = px.bar(
-        dff.groupby("region")["internet_quality_1to5"].mean().reset_index(),
-        x="region", y="internet_quality_1to5",
-        title="Average Internet Quality by Region"
+    assessment_df = (
+    dff["assessment_context_most_impacted"]
+    .value_counts()
+    .reset_index(name="count")
+    .rename(columns={"index": "Assessment Context"})
     )
+    
+    fig5 = px.bar(
+        assessment_df,
+        x="Assessment Context",
+        y="count",
+        text="count",
+        title="Assessment Areas Most Impacted by AI"
+    )
+    fig5.update_traces(textposition="outside")
+    st.plotly_chart(fig5, use_container_width=True)
+
     st.plotly_chart(fig5, use_container_width=True)
     st.markdown(
         "**Key Insight:**\n"

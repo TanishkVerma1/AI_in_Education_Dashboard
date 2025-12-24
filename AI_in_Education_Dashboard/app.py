@@ -1,12 +1,31 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from pathlib import Path
 
 st.set_page_config(page_title="AI in Education Dashboard", layout="wide")
 
+DATA_PATH = Path(__file__).parent / "data" / "ai_in_education_synthetic_dataset.csv"
+
 @st.cache_data
-def load_data():
-    return pd.read_csv("data/ai_in_education_synthetic_dataset.csv", parse_dates=["survey_date"])
+def load_data() -> pd.DataFrame:
+    if not DATA_PATH.exists():
+        st.error(
+            f"Dataset file not found at:\n{DATA_PATH}\n\n"
+            "✅ Fix:\n"
+            "1) Create a folder named `data` in your repo (same level as app.py)\n"
+            "2) Put the CSV inside it\n"
+            "3) Ensure the filename is exactly: `ai_in_education_synthetic_dataset.csv`"
+        )
+        st.stop()
+
+    df = pd.read_csv(DATA_PATH)
+
+    # Parse date safely (won't crash if column missing)
+    if "survey_date" in df.columns:
+        df["survey_date"] = pd.to_datetime(df["survey_date"], errors="coerce")
+
+    return df
 
 df = load_data()
 

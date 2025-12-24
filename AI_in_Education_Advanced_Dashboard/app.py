@@ -149,7 +149,7 @@ if page == "📘 Overview":
     )
 
     # 4️⃣ Digital Comfort
-   usecase_df = (
+    usecase_df = (
     dff["top_ai_use_cases"]
     .value_counts()
     .head(10)

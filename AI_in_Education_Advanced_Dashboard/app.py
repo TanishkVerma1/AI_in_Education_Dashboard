@@ -3,6 +3,36 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 from pathlib import Path
+import plotly.graph_objects as go
+
+def add_linear_trendline(fig, df_in, x_col, y_col, name="Trend line"):
+    """
+    Adds a simple linear regression line using numpy (no statsmodels needed).
+    """
+    tmp = df_in[[x_col, y_col]].dropna().copy()
+    if len(tmp) < 2:
+        return fig
+
+    x = tmp[x_col].astype(float).to_numpy()
+    y = tmp[y_col].astype(float).to_numpy()
+
+    # Fit y = m*x + b
+    m, b = np.polyfit(x, y, 1)
+
+    # Make a smooth line across the x-range
+    xs = np.linspace(x.min(), x.max(), 100)
+    ys = m * xs + b
+
+    fig.add_trace(
+        go.Scatter(
+            x=xs,
+            y=ys,
+            mode="lines",
+            name=name,
+            line=dict(width=3, dash="dash"),
+        )
+    )
+    return fig
 
 # -------------------------
 # PAGE CONFIG
@@ -265,9 +295,14 @@ elif page == "🎓 AI Usage Patterns":
 
     # 6) Usage vs time saved (easy scatter)
     fig6 = px.scatter(
-        dpage, x="ai_use_days_per_week", y="time_saved_hours_per_week",
-        trendline="ols", title="6) More AI days → More time saved? (trend line)"
+    dpage,
+    x="ai_use_days_per_week",
+    y="time_saved_hours_per_week",
+    title="6) More AI days → More time saved? (with trend line)"
     )
+    fig6 = add_linear_trendline(fig6, dpage, "ai_use_days_per_week", "time_saved_hours_per_week", "Trend line")
+    st.plotly_chart(fig6, use_container_width=True)
+
     fig6.update_layout(xaxis_title="Days per week using AI", yaxis_title="Hours saved per week")
     st.plotly_chart(fig6, use_container_width=True)
     insight_box([

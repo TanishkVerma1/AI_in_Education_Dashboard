@@ -29,6 +29,11 @@ def load_data() -> pd.DataFrame:
 
 df = load_data()
 
+COL_AI_USAGE = "avg_ai_usage_hours_per_week"
+COL_ACADEMIC_IMPACT = "academic_performance_change_1to5"
+COL_TRUST = "trust_in_ai_outputs_1to5"
+
+
 # ---------------- Sidebar ----------------
 st.sidebar.header("Global Filters")
 role = st.sidebar.multiselect("Role", df["role"].unique(), df["role"].unique())
@@ -47,8 +52,11 @@ if page == "Overview":
 
     c1, c2, c3 = st.columns(3)
     c1.metric("Respondents", len(dff))
-    c2.metric("Avg AI Usage (hrs/week)", round(dff["ai_usage_hours_per_week"].mean(), 2))
-    c3.metric("Avg Academic Impact", round(dff["academic_performance_change_1to5"].mean(), 2))
+    c2.metric(
+    "Avg AI Usage (hrs/week)",
+    round(dff[COL_AI_USAGE].mean(), 2))
+
+    c3.metric("Avg Academic Impact", round(dff[COL_ACADEMIC_IMPACT].mean(), 2))
 
     fig = px.histogram(dff, x="ai_usage_hours_per_week", color="role",
                        title="AI Usage Hours per Week")
